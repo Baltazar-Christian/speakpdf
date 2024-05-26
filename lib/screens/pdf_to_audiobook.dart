@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
-import 'package:pdf_text/pdf_text.dart';
+import 'dart:io';
+import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'package:file_picker/file_picker.dart';
 
 class PDFToAudiobook extends StatefulWidget {
@@ -17,8 +18,23 @@ class _PDFToAudiobookState extends State<PDFToAudiobook> {
     setState(() {
       _status = 'Reading...';
     });
-    PDFDoc pdf = await PDFDoc.fromPath(filePath);
-    String text = await pdf.text;
+    // Load the PDF document
+    PdfDocument document =
+        PdfDocument(inputBytes: File(filePath).readAsBytesSync());
+
+    // Initialize the text extractor
+    PdfTextExtractor extractor = PdfTextExtractor(document);
+
+    // Extract text from all pages
+    String text = '';
+    for (int i = 1; i <= document.pages.count; i++) {
+      text += extractor.extractText(startPageIndex: i, endPageIndex: i) + "\n";
+    }
+
+    // Close the document
+    document.dispose();
+
+    // Speak the text
     await flutterTts.setSpeechRate(_speechRate);
     await flutterTts.speak(text);
     setState(() {
