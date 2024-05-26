@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import 'screens/pdf_to_audiobook.dart';
+import 'screens/splash_screen.dart';
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -9,7 +12,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.red,
         visualDensity: VisualDensity.adaptivePlatformDensity,
         brightness: Brightness.light,
-        accentColor: Colors.redAccent,
+        // accentColor: Colors.redAccent,
       ),
       home: FutureBuilder(
         future: Future.delayed(Duration(seconds: 3)),
